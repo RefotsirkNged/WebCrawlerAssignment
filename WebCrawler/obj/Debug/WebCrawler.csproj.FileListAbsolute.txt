@@ -1,0 +1,6 @@
+c:\localcache\nkd01100.krd\prv-krd\visual studio 2015\Projects\WebCrawler\WebCrawler\bin\Debug\WebCrawler.exe.config
+c:\localcache\nkd01100.krd\prv-krd\visual studio 2015\Projects\WebCrawler\WebCrawler\bin\Debug\WebCrawler.exe
+c:\localcache\nkd01100.krd\prv-krd\visual studio 2015\Projects\WebCrawler\WebCrawler\bin\Debug\WebCrawler.pdb
+c:\localcache\nkd01100.krd\prv-krd\visual studio 2015\Projects\WebCrawler\WebCrawler\obj\Debug\WebCrawler.csprojResolveAssemblyReference.cache
+c:\localcache\nkd01100.krd\prv-krd\visual studio 2015\Projects\WebCrawler\WebCrawler\obj\Debug\WebCrawler.exe
+c:\localcache\nkd01100.krd\prv-krd\visual studio 2015\Projects\WebCrawler\WebCrawler\obj\Debug\WebCrawler.pdb
