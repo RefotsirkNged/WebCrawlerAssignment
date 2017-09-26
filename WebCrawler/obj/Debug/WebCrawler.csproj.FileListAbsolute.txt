@@ -4,3 +4,10 @@ c:\localcache\nkd01100.krd\prv-krd\visual studio 2015\Projects\WebCrawler\WebCra
 c:\localcache\nkd01100.krd\prv-krd\visual studio 2015\Projects\WebCrawler\WebCrawler\obj\Debug\WebCrawler.csprojResolveAssemblyReference.cache
 c:\localcache\nkd01100.krd\prv-krd\visual studio 2015\Projects\WebCrawler\WebCrawler\obj\Debug\WebCrawler.exe
 c:\localcache\nkd01100.krd\prv-krd\visual studio 2015\Projects\WebCrawler\WebCrawler\obj\Debug\WebCrawler.pdb
+C:\Users\krist\Documents\Github\WebCrawlerAssignment\WebCrawler\bin\Debug\WebCrawler.exe.config
+C:\Users\krist\Documents\Github\WebCrawlerAssignment\WebCrawler\bin\Debug\WebCrawler.exe
+C:\Users\krist\Documents\Github\WebCrawlerAssignment\WebCrawler\bin\Debug\WebCrawler.pdb
+C:\Users\krist\Documents\Github\WebCrawlerAssignment\WebCrawler\obj\Debug\WebCrawler.csprojResolveAssemblyReference.cache
+C:\Users\krist\Documents\Github\WebCrawlerAssignment\WebCrawler\obj\Debug\WebCrawler.csproj.CoreCompileInputs.cache
+C:\Users\krist\Documents\Github\WebCrawlerAssignment\WebCrawler\obj\Debug\WebCrawler.exe
+C:\Users\krist\Documents\Github\WebCrawlerAssignment\WebCrawler\obj\Debug\WebCrawler.pdb

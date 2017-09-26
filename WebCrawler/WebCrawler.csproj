@@ -49,7 +49,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RobotsParser.cs" />
     <Compile Include="SimilarityAnalyser.cs" />
-    <Compile Include="SupremeCrawler.cs" />
+    <Compile Include="Spiderman.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

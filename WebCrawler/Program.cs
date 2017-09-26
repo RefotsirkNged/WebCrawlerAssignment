@@ -21,7 +21,7 @@ namespace WebCrawler
 
 
             };
-            SupremeCrawler sr = new SupremeCrawler(seed);
+            Spiderman sr = new Spiderman(seed);
             while (true)
             {
                 Console.WriteLine("Would you like to load an index [1] and go from there, or crawl from a new seed [2], or crawl from the default seeds [3]");
@@ -56,7 +56,7 @@ namespace WebCrawler
                         else
                             Console.WriteLine("Beginning crawl...");
 
-                        sr = new SupremeCrawler(seeds);
+                        sr = new Spiderman(seeds);
                         sr.StartCrawl();
                     }
                 }
