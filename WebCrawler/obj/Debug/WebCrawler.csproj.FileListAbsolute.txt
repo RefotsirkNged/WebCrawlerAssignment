@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 c:\localcache\nkd01100.krd\prv-krd\visual studio 2015\Projects\WebCrawler\WebCrawler\bin\Debug\WebCrawler.exe.config
 c:\localcache\nkd01100.krd\prv-krd\visual studio 2015\Projects\WebCrawler\WebCrawler\bin\Debug\WebCrawler.exe
 c:\localcache\nkd01100.krd\prv-krd\visual studio 2015\Projects\WebCrawler\WebCrawler\bin\Debug\WebCrawler.pdb
@@ -20,3 +21,25 @@ C:\Users\krist\WebCrawlerAssignment\WebCrawler\obj\Debug\WebCrawler.csprojResolv
 C:\Users\krist\WebCrawlerAssignment\WebCrawler\bin\Debug\HtmlAgilityPack.dll
 C:\Users\krist\WebCrawlerAssignment\WebCrawler\bin\Debug\HtmlAgilityPack.pdb
 C:\Users\krist\WebCrawlerAssignment\WebCrawler\bin\Debug\HtmlAgilityPack.xml
+=======
+c:/localcache/nkd01100.krd/prv-krd/visual studio 2015/Projects/WebCrawler/WebCrawler/bin/Debug/WebCrawler.exe.config
+c:/localcache/nkd01100.krd/prv-krd/visual studio 2015/Projects/WebCrawler/WebCrawler/bin/Debug/WebCrawler.exe
+c:/localcache/nkd01100.krd/prv-krd/visual studio 2015/Projects/WebCrawler/WebCrawler/bin/Debug/WebCrawler.pdb
+c:/localcache/nkd01100.krd/prv-krd/visual studio 2015/Projects/WebCrawler/WebCrawler/obj/Debug/WebCrawler.csprojResolveAssemblyReference.cache
+c:/localcache/nkd01100.krd/prv-krd/visual studio 2015/Projects/WebCrawler/WebCrawler/obj/Debug/WebCrawler.exe
+c:/localcache/nkd01100.krd/prv-krd/visual studio 2015/Projects/WebCrawler/WebCrawler/obj/Debug/WebCrawler.pdb
+C:/Users/krist/Documents/Github/WebCrawlerAssignment/WebCrawler/bin/Debug/WebCrawler.exe.config
+C:/Users/krist/Documents/Github/WebCrawlerAssignment/WebCrawler/bin/Debug/WebCrawler.exe
+C:/Users/krist/Documents/Github/WebCrawlerAssignment/WebCrawler/bin/Debug/WebCrawler.pdb
+C:/Users/krist/Documents/Github/WebCrawlerAssignment/WebCrawler/obj/Debug/WebCrawler.csprojResolveAssemblyReference.cache
+C:/Users/krist/Documents/Github/WebCrawlerAssignment/WebCrawler/obj/Debug/WebCrawler.csproj.CoreCompileInputs.cache
+C:/Users/krist/Documents/Github/WebCrawlerAssignment/WebCrawler/obj/Debug/WebCrawler.exe
+C:/Users/krist/Documents/Github/WebCrawlerAssignment/WebCrawler/obj/Debug/WebCrawler.pdb
+/Users/augustkorvell/WebCrawlerAssignment/WebCrawler/bin/Debug/WebCrawler.exe.config
+/Users/augustkorvell/WebCrawlerAssignment/WebCrawler/bin/Debug/WebCrawler.exe
+/Users/augustkorvell/WebCrawlerAssignment/WebCrawler/bin/Debug/WebCrawler.pdb
+/Users/augustkorvell/WebCrawlerAssignment/WebCrawler/obj/Debug/WebCrawler.csprojResolveAssemblyReference.cache
+/Users/augustkorvell/WebCrawlerAssignment/WebCrawler/obj/Debug/WebCrawler.csproj.CoreCompileInputs.cache
+/Users/augustkorvell/WebCrawlerAssignment/WebCrawler/obj/Debug/WebCrawler.exe
+/Users/augustkorvell/WebCrawlerAssignment/WebCrawler/obj/Debug/WebCrawler.pdb
+>>>>>>> master
