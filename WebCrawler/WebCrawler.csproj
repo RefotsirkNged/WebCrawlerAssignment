@@ -50,9 +50,17 @@
     <Compile Include="RobotsParser.cs" />
     <Compile Include="SimilarityAnalyser.cs" />
     <Compile Include="Spiderman.cs" />
+    <Compile Include="Indexer.cs" />
+    <Compile Include="TermVector.cs" />
+    <Compile Include="PorterStemmer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Resources\StopWords.txt" />
+    <None Include="Resources\Symbols.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
