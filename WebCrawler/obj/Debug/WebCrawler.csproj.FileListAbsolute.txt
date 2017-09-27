@@ -11,3 +11,12 @@ C:\Users\krist\Documents\Github\WebCrawlerAssignment\WebCrawler\obj\Debug\WebCra
 C:\Users\krist\Documents\Github\WebCrawlerAssignment\WebCrawler\obj\Debug\WebCrawler.csproj.CoreCompileInputs.cache
 C:\Users\krist\Documents\Github\WebCrawlerAssignment\WebCrawler\obj\Debug\WebCrawler.exe
 C:\Users\krist\Documents\Github\WebCrawlerAssignment\WebCrawler\obj\Debug\WebCrawler.pdb
+C:\Users\krist\WebCrawlerAssignment\WebCrawler\bin\Debug\WebCrawler.exe.config
+C:\Users\krist\WebCrawlerAssignment\WebCrawler\obj\Debug\WebCrawler.exe
+C:\Users\krist\WebCrawlerAssignment\WebCrawler\obj\Debug\WebCrawler.pdb
+C:\Users\krist\WebCrawlerAssignment\WebCrawler\bin\Debug\WebCrawler.exe
+C:\Users\krist\WebCrawlerAssignment\WebCrawler\bin\Debug\WebCrawler.pdb
+C:\Users\krist\WebCrawlerAssignment\WebCrawler\obj\Debug\WebCrawler.csprojResolveAssemblyReference.cache
+C:\Users\krist\WebCrawlerAssignment\WebCrawler\bin\Debug\HtmlAgilityPack.dll
+C:\Users\krist\WebCrawlerAssignment\WebCrawler\bin\Debug\HtmlAgilityPack.pdb
+C:\Users\krist\WebCrawlerAssignment\WebCrawler\bin\Debug\HtmlAgilityPack.xml
