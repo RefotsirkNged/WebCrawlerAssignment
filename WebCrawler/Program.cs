@@ -28,10 +28,7 @@ namespace WebCrawler
                 var response = Console.ReadLine();
                 if (response == "1")
                 {
-                    Console.WriteLine("Please place the desired index in the root folder of this .exe, and type in the filename:");
-                    string filename = Console.ReadLine();
-                    sr.ReadIndexFromXml("..//" + filename + ".index");
-                    sr.StartCrawl();
+                    Console.WriteLine("not used lul");
                 }
                 else if (response == "2")
                 {
@@ -63,23 +60,13 @@ namespace WebCrawler
                 else if(response == "3")
                 {
                     sr.StartCrawl();
-                    sr.WriteIndexToXml("defaultSeedIndex");
+                    sr.actualIndex.WriteToTxt();
                     Console.WriteLine("Result saved to root folder");
                 }
                 else
                     Console.WriteLine("That was not a proper response!");
 
             }
-
-
-            sr.StartCrawl();
-
-            
-
-
-
-
-
             Console.ReadLine();
         }
     }

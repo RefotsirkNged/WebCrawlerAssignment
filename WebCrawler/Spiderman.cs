@@ -11,7 +11,7 @@ using System.Xml;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using System.Text.RegularExpressions;
-using HtmlAgilityPack;
+
 
 namespace WebCrawler
 {
@@ -23,7 +23,7 @@ namespace WebCrawler
         //param1: url param2: html
 
         Dictionary<string, string> index = new Dictionary<string, string>();
-        Dictionary<string, List<string>> invertedIndex = new Dictionary<string, List<string>>();
+        public Indexer actualIndex = new Indexer();
         Dictionary<string, List<string>> robotsIndex = new Dictionary<string, List<string>>();
 
         List<string> GenerallyDisallowedActions = new List<string>()
@@ -89,17 +89,9 @@ namespace WebCrawler
             return result;
         }
 
-        public static string StripStuff(string input)
-        {
-            var doc = new HtmlAgilityPack.HtmlDocument();
-            doc.LoadHtml(input);
-
-            return input;
-        }
-
         public void StartCrawl()
         {
-            while (frontier.Count > 0 && index.Count < 10)
+            while (frontier.Count > 0 && actualIndex.TermsCount < 10)
             {
                 string url = frontier.Dequeue();
                 string result = CrawlPage(new Uri(url));
@@ -107,7 +99,7 @@ namespace WebCrawler
                 {
                     if (!index.ContainsKey(url))
                     {
-                        index.Add(url, StripHTML(result));
+                        actualIndex.IndexDocument(url, StripHTML(result));
                         Console.WriteLine(url);
                         foreach (string link in ExtractLinks(result))
                         {
@@ -216,30 +208,6 @@ namespace WebCrawler
                 Console.WriteLine("Error: " + url);
             }
             return "";
-        }
-
-
-        public void WriteIndexToXml(string indexName)
-        {
-
-            using (StreamWriter sw = new StreamWriter(@"..\\" + indexName + ".txt"))
-            {
-                foreach (KeyValuePair<string, string> key in index)
-                {
-                    sw.WriteLine(key);
-                    sw.WriteLine(key.Value);
-                }
-            }
-        }
-
-        public void ReadIndexFromXml(string filepath)
-        {
-            throw new NotImplementedException();
-            XmlSerializer xs = new XmlSerializer(typeof(Item[]), new XmlRootAttribute() {ElementName = "items"});
-            using (StreamReader sr = new StreamReader(filepath))
-            {
-                index = ((Item[]) xs.Deserialize(sr)).ToDictionary(i => i.key, i => i.value);
-            }
         }
     }
 }

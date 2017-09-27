@@ -17,7 +17,12 @@ namespace WebCrawler
             documents = new Dictionary<string, int>();
         }
 
-		public void AddDocument(string document)
+        public Dictionary<string, int> Documents
+        {
+            get { return documents; }
+        }
+
+        public void AddDocument(string document)
 		{
             if (documents.ContainsKey(document))
                 documents[document]++;
