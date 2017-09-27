@@ -5,13 +5,25 @@ namespace WebCrawler
 {
     public class TermVector
     {
-		string term;
-		int ID;
-        List<string> documents;
+        public string term;
+        private int ID;
 
-		public TermVector(int ID, string term)
+        //Document (url) and frequenzy
+        private Dictionary<string, int> documents;
+
+        public TermVector(string term)
         {
-            
+            this.term = term;
+            documents = new Dictionary<string, int>();
         }
+
+		public void AddDocument(string document)
+		{
+            if (documents.ContainsKey(document))
+                documents[document]++;
+            else
+                documents[document] = 1;
+		}
+    
     }
 }
