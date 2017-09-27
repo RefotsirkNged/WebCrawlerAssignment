@@ -1,6 +1,5 @@
 <<<<<<< HEAD
 =======
-<<<<<<< HEAD
 c:\localcache\nkd01100.krd\prv-krd\visual studio 2015\Projects\WebCrawler\WebCrawler\bin\Debug\WebCrawler.exe.config
 c:\localcache\nkd01100.krd\prv-krd\visual studio 2015\Projects\WebCrawler\WebCrawler\bin\Debug\WebCrawler.exe
 c:\localcache\nkd01100.krd\prv-krd\visual studio 2015\Projects\WebCrawler\WebCrawler\bin\Debug\WebCrawler.pdb
@@ -23,7 +22,6 @@ C:\Users\krist\WebCrawlerAssignment\WebCrawler\obj\Debug\WebCrawler.csprojResolv
 C:\Users\krist\WebCrawlerAssignment\WebCrawler\bin\Debug\HtmlAgilityPack.dll
 C:\Users\krist\WebCrawlerAssignment\WebCrawler\bin\Debug\HtmlAgilityPack.pdb
 C:\Users\krist\WebCrawlerAssignment\WebCrawler\bin\Debug\HtmlAgilityPack.xml
-=======
 >>>>>>> master
 c:/localcache/nkd01100.krd/prv-krd/visual studio 2015/Projects/WebCrawler/WebCrawler/bin/Debug/WebCrawler.exe.config
 c:/localcache/nkd01100.krd/prv-krd/visual studio 2015/Projects/WebCrawler/WebCrawler/bin/Debug/WebCrawler.exe
@@ -45,7 +43,6 @@ C:/Users/krist/Documents/Github/WebCrawlerAssignment/WebCrawler/obj/Debug/WebCra
 /Users/augustkorvell/WebCrawlerAssignment/WebCrawler/obj/Debug/WebCrawler.csproj.CoreCompileInputs.cache
 /Users/augustkorvell/WebCrawlerAssignment/WebCrawler/obj/Debug/WebCrawler.exe
 /Users/augustkorvell/WebCrawlerAssignment/WebCrawler/obj/Debug/WebCrawler.pdb
-<<<<<<< HEAD
 C:\Users\asease1\WebCrawlerAssignment\WebCrawler\bin\Debug\WebCrawler.exe.config
 C:\Users\asease1\WebCrawlerAssignment\WebCrawler\obj\Debug\WebCrawler.exe
 C:\Users\asease1\WebCrawlerAssignment\WebCrawler\obj\Debug\WebCrawler.pdb
@@ -60,6 +57,3 @@ C:\Users\asease1\WebCrawlerAssignment\WebCrawler\bin\Debug\EntityFramework.xml
 C:\Users\asease1\WebCrawlerAssignment\WebCrawler\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\asease1\WebCrawlerAssignment\WebCrawler\bin\Debug\System.Data.SQLite.xml
 C:\Users\asease1\WebCrawlerAssignment\WebCrawler\obj\Debug\WebCrawler.csprojResolveAssemblyReference.cache
-=======
->>>>>>> master
->>>>>>> master

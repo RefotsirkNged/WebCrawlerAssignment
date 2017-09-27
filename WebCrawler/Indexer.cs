@@ -61,36 +61,6 @@ namespace WebCrawler
 
         public void WriteToTxt()
         {
-            using (StreamWriter sw = new StreamWriter(@"..\\" + "index" + ".txt"))
-            {
-                StringBuilder docHeaderBuilder = new StringBuilder();
-                docHeaderBuilder.Append(";");
-                foreach (var indexedTerm in terms.Values)
-                {
-                    foreach (var document in indexedTerm.Documents)
-                    {
-                        docHeaderBuilder.Append(document);
-                    }
-
-                }
-                sw.WriteLine(docHeaderBuilder);
-
-
-                foreach (string term in terms.Keys)
-                {
-                    StringBuilder termVectorBuilder = new StringBuilder();
-                    termVectorBuilder.Append(term + ";");
-                    foreach (var indexedTerm in terms)
-                    {
-                        foreach (var documentsValue in indexedTerm.Value.Documents.Values)
-                        {
-                            termVectorBuilder.Append(documentsValue);
-                        }
-
-                    }
-                    sw.WriteLine(termVectorBuilder.ToString());
-                }
-            }
         }
     }
 }
