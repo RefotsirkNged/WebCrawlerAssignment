@@ -11,6 +11,7 @@ using System.Xml;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using System.Text.RegularExpressions;
+using HtmlAgilityPack;
 
 namespace WebCrawler
 {
@@ -41,8 +42,7 @@ namespace WebCrawler
             ".mp3",
             ".mp4",
             ".img",
-            ".ico",
-            "/v"
+            ".ico"
         };
 
 
@@ -76,12 +76,25 @@ namespace WebCrawler
 
         public static string StripHTML(string input)
         {
-            return Regex.Replace(input, "<.*?>", String.Empty);
+            var regex = new Regex(
+                "(\\<script(.+?)\\</script\\>)|(\\<style(.+?)\\</style\\>)",
+                RegexOptions.Singleline | RegexOptions.IgnoreCase
+            );
+            string result = regex.Replace(input, String.Empty);
+            result = Regex.Replace(result, "<.*?>", string.Empty, RegexOptions.Multiline);
+            result = Regex.Replace(result, "xmlns.*?\n", string.Empty);
+            result = Regex.Replace(result, "<html.*?\n", "");
+            result = Regex.Replace(result, "<iframe.*?", string.Empty);
+            result = Regex.Replace(result, @"^\s+$[\r\n]*", "", RegexOptions.Multiline);
+            return result;
         }
 
         public static string StripStuff(string input)
         {
-            return Regex.Replace(input, ".*?&#xD.*?;", String.Empty);
+            var doc = new HtmlAgilityPack.HtmlDocument();
+            doc.LoadHtml(input);
+
+            return input;
         }
 
         public void StartCrawl()
@@ -94,7 +107,7 @@ namespace WebCrawler
                 {
                     if (!index.ContainsKey(url))
                     {
-                        index.Add(url, StripStuff(StripHTML(result)));
+                        index.Add(url, StripHTML(result));
                         Console.WriteLine(url);
                         foreach (string link in ExtractLinks(result))
                         {
@@ -208,15 +221,20 @@ namespace WebCrawler
 
         public void WriteIndexToXml(string indexName)
         {
-            XmlSerializer xs = new XmlSerializer(typeof(Item[]), new XmlRootAttribute() {ElementName = "items"});
-            using (StreamWriter sw = new StreamWriter(@"..\\" + indexName + ".index"))
+
+            using (StreamWriter sw = new StreamWriter(@"..\\" + indexName + ".txt"))
             {
-                xs.Serialize(sw, index.Select(kv => new Item() {key = kv.Key, value = kv.Value}).ToArray());
+                foreach (KeyValuePair<string, string> key in index)
+                {
+                    sw.WriteLine(key);
+                    sw.WriteLine(key.Value);
+                }
             }
         }
 
         public void ReadIndexFromXml(string filepath)
         {
+            throw new NotImplementedException();
             XmlSerializer xs = new XmlSerializer(typeof(Item[]), new XmlRootAttribute() {ElementName = "items"});
             using (StreamReader sr = new StreamReader(filepath))
             {
