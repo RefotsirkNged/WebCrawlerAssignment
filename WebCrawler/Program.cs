@@ -14,6 +14,7 @@ namespace WebCrawler
 
         static void Main(string[] args)
         {
+
             List<string> seed = new List<string>
             {
                 "https://www.icrc.org",
