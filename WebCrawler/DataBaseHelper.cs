@@ -98,6 +98,43 @@ namespace WebCrawler
             return count;
         }
 
+        public List<string> QueryTerm(string term)
+        {
+            List<string> results = new List<string>();
+            int termID = -1;
+
+            m_dbConnection.Open();
+
+            using (SQLiteCommand command = new SQLiteCommand("SELECT " + termCol1 + " FROM " + TermTable + " WHERE " + termCol2 + " = '" + term + "'", m_dbConnection))
+            {
+                using(SQLiteDataReader reader = command.ExecuteReader())
+                {
+					for (int i = 0; i < reader.StepCount; i++)
+					{
+						reader.Read();
+						termID = reader.GetInt32(0);
+					}
+                }
+            }
+
+
+            using (SQLiteCommand command = new SQLiteCommand("SELECT " + DocCol1 + " FROM " + DocTable + " WHERE " + DocCol2 + " = '" + termID + "'", m_dbConnection))
+			{
+				using (SQLiteDataReader reader = command.ExecuteReader())
+				{
+					for (int i = 0; i < reader.StepCount; i++)
+					{
+						reader.Read();
+                        results.Add(reader.GetString(0));
+					}
+				}
+			}
+
+			m_dbConnection.Close();
+
+            return results;
+        } 
+
         public void CloseDatabase()
         {
             m_dbConnection.Close();
