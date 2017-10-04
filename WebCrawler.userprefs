@@ -1,14 +1,13 @@
 ﻿<Properties StartupConfiguration="{F66E83C2-6DC7-4C9A-AF6C-169B96C285C9}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="WebCrawler/Querier.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="WebCrawler/Program.cs">
     <Files>
       <File FileName="WebCrawler/Spiderman.cs" Line="1" Column="1" />
-      <File FileName="WebCrawler/Indexer.cs" Line="60" Column="14" />
+      <File FileName="WebCrawler/Indexer.cs" Line="59" Column="42" />
       <File FileName="WebCrawler/TermVector.cs" Line="1" Column="14" />
       <File FileName="WebCrawler/PorterStemmer.cs" Line="72" Column="31" />
-      <File FileName="WebCrawler/DataBaseHelper.cs" Line="1" Column="1" />
-      <File FileName="WebCrawler/Program.cs" Line="63" Column="37" />
-      <File FileName="WebCrawler/packages.config" Line="1" Column="1" />
-      <File FileName="WebCrawler/Querier.cs" Line="7" Column="10" />
+      <File FileName="WebCrawler/DataBaseHelper.cs" Line="135" Column="28" />
+      <File FileName="WebCrawler/Program.cs" Line="71" Column="21" />
+      <File FileName="WebCrawler/Querier.cs" Line="22" Column="14" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
