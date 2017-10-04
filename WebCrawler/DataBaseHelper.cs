@@ -36,12 +36,16 @@ namespace WebCrawler
             command.ExecuteNonQuery();
             command = new SQLiteCommand(sqlTable2, m_dbConnection);
             command.ExecuteNonQuery();
+
+            m_dbConnection.Close();
         }
 
         public void InsertTerm(string term, string docId)
         {
             int termID = 0;
             SQLiteCommand command = new SQLiteCommand("select * From " + TermTable + " WHERE " + termCol2 + " = \"" + term + "\"", m_dbConnection);
+
+            m_dbConnection.Open();
             SQLiteDataReader reader = command.ExecuteReader();
             if(reader.StepCount == 0)
             {
@@ -67,6 +71,8 @@ namespace WebCrawler
                 command = new SQLiteCommand("UPDATE " + DocTable + " SET " + DocCol3 + " = " + DocCol3 + " + 1 WHERE " + DocCol1 + " = \" AND " + termCol1 + " = " + termID, m_dbConnection);
                 command.ExecuteNonQuery();
             }
+
+            m_dbConnection.Close();
         }
 
         public int[] getTermCount(string docID)
@@ -79,6 +85,8 @@ namespace WebCrawler
                 reader.Read();
                 count[i] = reader.GetInt32(2);
             }
+
+            m_dbConnection.Close();
             return count;
         }
 

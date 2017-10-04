@@ -26,6 +26,7 @@ namespace WebCrawler
         {
             PorterStemmer stemmer = new PorterStemmer();
             List<string> symbols = File.ReadAllLines("..\\Resources\\Symbols.txt").ToList();
+            DatabaseHelper db = new DatabaseHelper();
 
             foreach (string symbol in symbols)
             {
@@ -46,14 +47,16 @@ namespace WebCrawler
 
             foreach (string word in words)
             {
-                if(terms.ContainsKey(word)){
-                    terms[word].AddDocument(url);
-                }
-                else
-                {
-                    terms.Add(word, new TermVector(word));
-                    terms[word].AddDocument(url);
-                }
+                //if(terms.ContainsKey(word)){
+                //    terms[word].AddDocument(url);
+                //}
+                //else
+                //{
+                //    terms.Add(word, new TermVector(word));
+                //    terms[word].AddDocument(url);
+                //}
+
+                db.InsertTerm(word, url);
             }
         }
 
