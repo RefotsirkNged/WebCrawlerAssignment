@@ -15,7 +15,7 @@ namespace WebCrawler
         private const string termCol1 = "TermID";
         private const string termCol2 = "Term";
 
-        private const string DocTalbe = "DocTable";
+        private const string DocTable = "DocTable";
         private const string DocCol1 = "ID";
         private const string DocCol2 = termCol1;
         private const string DocCol3 = "TermCount";
@@ -30,7 +30,7 @@ namespace WebCrawler
             m_dbConnection.Open();
 
             string sqlTable1 = "create table " + TermTable + " (" + termCol1 + " INTEGER PRIMARY KEY AUTOINCREMENT , " + termCol2 + " TEXT)";
-            string sqlTable2 = "create table " + DocTalbe + " (" + DocCol1 + " TEXT , " + DocCol2 + " INTEGER , " + DocCol3 + " INTEGER )";
+            string sqlTable2 = "create table " + DocTable + " (" + DocCol1 + " TEXT , " + DocCol2 + " INTEGER , " + DocCol3 + " INTEGER )";
 
             SQLiteCommand command = new SQLiteCommand(sqlTable1, m_dbConnection);
             command.ExecuteNonQuery();
@@ -55,23 +55,23 @@ namespace WebCrawler
             
                 
 
-            command = new SQLiteCommand("select " + DocCol1 + " From " + DocTalbe + " WHERE " + DocCol1 + " = \"" + docId + "\" AND " + termCol1 + " = "+termID, m_dbConnection);
+            command = new SQLiteCommand("select " + DocCol1 + " From " + DocTable + " WHERE " + DocCol1 + " = \"" + docId + "\" AND " + termCol1 + " = "+termID, m_dbConnection);
             reader = command.ExecuteReader();
             if (reader.StepCount == 0)
             {
-                command = new SQLiteCommand("Insert into " + DocTalbe + "( " + DocCol1 + " , " + DocCol2 + " , " + DocCol3 + " ) Values ( \"" + docId + "\" , " + termID + " , " + 1 + " )", m_dbConnection);
+                command = new SQLiteCommand("Insert into " + DocTable + "( " + DocCol1 + " , " + DocCol2 + " , " + DocCol3 + " ) Values ( \"" + docId + "\" , " + termID + " , " + 1 + " )", m_dbConnection);
                 command.ExecuteNonQuery();
             }
             else
             {
-                command = new SQLiteCommand("UPDATE " + DocTalbe + " SET " + DocCol3 + " = " + DocCol3 + " + 1 WHERE " + DocCol1 + " = \" AND " + termCol1 + " = " + termID, m_dbConnection);
+                command = new SQLiteCommand("UPDATE " + DocTable + " SET " + DocCol3 + " = " + DocCol3 + " + 1 WHERE " + DocCol1 + " = \" AND " + termCol1 + " = " + termID, m_dbConnection);
                 command.ExecuteNonQuery();
             }
         }
 
         public int[] getTermCount(string docID)
         {
-            SQLiteCommand command = new SQLiteCommand("select * From " + DocTalbe + " WHERE " + DocCol1 + " = \"" + docID + "\"", m_dbConnection);
+            SQLiteCommand command = new SQLiteCommand("select * From " + DocTable + " WHERE " + DocCol1 + " = \"" + docID + "\"", m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
             int[] count = new int[reader.StepCount];
             for(int i = 0; i < reader.StepCount; i++)
