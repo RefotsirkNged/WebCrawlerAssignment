@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data.SQLite;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace WebCrawler
 {
-    class DatabaseHelper
+    public class DatabaseHelper
     {
         private const string DatabaseName = "TermDatabase.sqlite";
 
@@ -15,7 +16,7 @@ namespace WebCrawler
         private const string termIDCol = "TermID";
         private const string termCol = "Term";
 
-        private const string Documents = "Docouments";
+        private const string Documents = "Documents";
         private const string docIDCol = "ID";
         private const string docTermFKCol = termIDCol;
         private const string docTermCountCol = "TermCount";
@@ -31,18 +32,25 @@ namespace WebCrawler
         public DatabaseHelper()
         {
             //TODO: add some kind of check to see if the file already exists? or is that already handled
-            SQLiteConnection.CreateFile(DatabaseName);
+            if (!File.Exists(Directory.GetCurrentDirectory() +  "//TermDatabase.sqlite"))
+            {
+                SQLiteConnection.CreateFile(DatabaseName);
+                m_dbConnection = new SQLiteConnection("Data Source=" + DatabaseName + ";Version=3;");
+                m_dbConnection.Open();
 
-            m_dbConnection = new SQLiteConnection("Data Source=" + DatabaseName + ";Version=3;");
-            m_dbConnection.Open();
+                string sqlTable1 = "create table " + Terms + " (" + termIDCol + " INTEGER PRIMARY KEY AUTOINCREMENT , " + termCol + " TEXT)";
+                string sqlTable2 = "create table " + Documents + " (" + docIDCol + " TEXT , " + docTermFKCol + " INTEGER , " + docTermCountCol + " INTEGER )";
 
-            string sqlTable1 = "create table " + Terms + " (" + termIDCol + " INTEGER PRIMARY KEY AUTOINCREMENT , " + termCol + " TEXT)";
-            string sqlTable2 = "create table " + Documents + " (" + docIDCol + " TEXT , " + docTermFKCol + " INTEGER , " + docTermCountCol + " INTEGER )";
+                SQLiteCommand command = new SQLiteCommand(sqlTable1, m_dbConnection);
+                command.ExecuteNonQuery();
+                command = new SQLiteCommand(sqlTable2, m_dbConnection);
+                command.ExecuteNonQuery();
+            }
+            else
+            {
+                m_dbConnection = new SQLiteConnection("Data Source=" + Directory.GetCurrentDirectory() + "\\" + DatabaseName + ";Version=3;");
+            }
 
-            SQLiteCommand command = new SQLiteCommand(sqlTable1, m_dbConnection);
-            command.ExecuteNonQuery();
-            command = new SQLiteCommand(sqlTable2, m_dbConnection);
-            command.ExecuteNonQuery();
 
             m_dbConnection.Close();
         }
@@ -127,7 +135,7 @@ namespace WebCrawler
 
         public void InsertTerm(string term, string docId)
         {
-
+            m_dbConnection.Open();
             int termID = 0;
             DBStatus termStatus = GetTermDBStatus(term);
             SQLiteCommand command = new SQLiteCommand("select * From " + Terms + " WHERE " + termCol + " = \"" + term + "\"", m_dbConnection);

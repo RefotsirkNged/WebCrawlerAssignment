@@ -85,7 +85,7 @@ namespace WebCrawler
                         }
                     }
 
-                    foreach (string result in Querier.Query(words))
+                    foreach (string result in Querier.Query(words, sr.dbhelper))
                     {
                         Console.WriteLine(result);
                     }

@@ -11,12 +11,11 @@ namespace WebCrawler
             
         }
 
-        public static List<string> Query(Dictionary<string, bool> queries)
+        public static List<string> Query(Dictionary<string, bool> queries, DatabaseHelper db)
         {
             List<string> results = new List<string>();
             Dictionary<string, bool> stemmedQueries = new Dictionary<string, bool>();
             PorterStemmer stemmer = new PorterStemmer();
-            DatabaseHelper db = new DatabaseHelper();
 
             foreach (string key in queries.Keys)
             {

@@ -19,7 +19,7 @@ namespace WebCrawler
     {
         Queue<string> frontier = new Queue<string>();
         SimilarityAnalyser SimAnalyser;
-        DatabaseHelper dbhelper = new DatabaseHelper();
+        public DatabaseHelper dbhelper = new DatabaseHelper();
 
         //param1: url param2: html
 
