@@ -57,3 +57,11 @@ C:\Users\asease1\WebCrawlerAssignment\WebCrawler\bin\Debug\EntityFramework.xml
 C:\Users\asease1\WebCrawlerAssignment\WebCrawler\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\asease1\WebCrawlerAssignment\WebCrawler\bin\Debug\System.Data.SQLite.xml
 C:\Users\asease1\WebCrawlerAssignment\WebCrawler\obj\Debug\WebCrawler.csprojResolveAssemblyReference.cache
+C:\Users\krist\WebCrawlerAssignment\WebCrawler\bin\Debug\EntityFramework.dll
+C:\Users\krist\WebCrawlerAssignment\WebCrawler\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\krist\WebCrawlerAssignment\WebCrawler\bin\Debug\System.Data.SQLite.dll
+C:\Users\krist\WebCrawlerAssignment\WebCrawler\bin\Debug\System.Data.SQLite.EF6.dll
+C:\Users\krist\WebCrawlerAssignment\WebCrawler\bin\Debug\System.Data.SQLite.Linq.dll
+C:\Users\krist\WebCrawlerAssignment\WebCrawler\bin\Debug\EntityFramework.xml
+C:\Users\krist\WebCrawlerAssignment\WebCrawler\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\krist\WebCrawlerAssignment\WebCrawler\bin\Debug\System.Data.SQLite.xml
