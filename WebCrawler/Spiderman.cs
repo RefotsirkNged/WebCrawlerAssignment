@@ -43,7 +43,9 @@ namespace WebCrawler
             ".mp3",
             ".mp4",
             ".img",
-            ".ico"
+            ".ico",
+            ".ru",
+            "/ru"
         };
 
 
