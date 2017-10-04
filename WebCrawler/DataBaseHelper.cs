@@ -20,6 +20,12 @@ namespace WebCrawler
         private const string DocCol2 = termCol1;
         private const string DocCol3 = "TermCount";
 
+        private enum DBStatus
+        {
+            NotExist,
+            Exist
+        }
+
         private SQLiteConnection m_dbConnection;
 
         public DatabaseHelper()
@@ -40,12 +46,51 @@ namespace WebCrawler
             m_dbConnection.Close();
         }
 
+
+        public void InsertTermV2(string term, string docID)
+        {
+            m_dbConnection.Open();
+
+            int termID = 0;
+            DBStatus termStatus = GetTermDBStatus(term);
+
+            switch (termStatus)
+            {
+                case DBStatus.NotExist:
+                    break;
+
+                case DBStatus.Exist:
+                    break;
+
+                default:
+                    break;
+            }
+
+        }
+
+        private DBStatus GetTermDBStatus(string term)
+        {
+            DBStatus termStatus;
+            string readDocID = "select * From " + TermTable + " WHERE " + termCol2 + " = \"" + term + "\"";
+
+            using (SQLiteCommand command = new SQLiteCommand(readDocID, m_dbConnection))
+            {
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    termStatus = (DBStatus) reader.StepCount;
+                }
+            }
+            return termStatus;
+        }
+
         public void InsertTerm(string term, string docId)
         {
+
             int termID = 0;
+            DBStatus termStatus = GetTermDBStatus(term);
             SQLiteCommand command = new SQLiteCommand("select * From " + TermTable + " WHERE " + termCol2 + " = \"" + term + "\"", m_dbConnection);
 
-            m_dbConnection.Open();
+
             SQLiteDataReader reader = command.ExecuteReader();
             command.Dispose();
             if(reader.StepCount == 0)

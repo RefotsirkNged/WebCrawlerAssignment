@@ -62,3 +62,6 @@ C:/Users/krist/WebCrawlerAssignment/WebCrawler/bin/Debug/System.Data.SQLite.xml
 /Users/augustkorvell/WebCrawlerAssignment/WebCrawler/obj/Debug/WebCrawler.csproj.CoreCompileInputs.cache
 /Users/augustkorvell/WebCrawlerAssignment/WebCrawler/obj/Debug/WebCrawler.exe
 /Users/augustkorvell/WebCrawlerAssignment/WebCrawler/obj/Debug/WebCrawler.pdb
+C:\Users\krist\WebCrawlerAssignment\WebCrawler\bin\Debug\WebCrawler.exe.config
+C:\Users\krist\WebCrawlerAssignment\WebCrawler\obj\Debug\WebCrawler.exe
+C:\Users\krist\WebCrawlerAssignment\WebCrawler\obj\Debug\WebCrawler.pdb
