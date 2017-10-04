@@ -11,7 +11,7 @@ namespace WebCrawler
             
         }
 
-        public List<string> Query(Dictionary<string, bool> queries)
+        public static List<string> Query(Dictionary<string, bool> queries)
         {
             List<string> results = new List<string>();
             Dictionary<string, bool> stemmedQueries = new Dictionary<string, bool>();
