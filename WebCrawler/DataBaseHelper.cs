@@ -47,20 +47,26 @@ namespace WebCrawler
 
             m_dbConnection.Open();
             SQLiteDataReader reader = command.ExecuteReader();
+            command.Dispose();
             if(reader.StepCount == 0)
             {
                 command = new SQLiteCommand("Insert into " + TermTable + "( " + termCol2 + " ) Values ( '" + term + "' )", m_dbConnection);
                 command.ExecuteNonQuery();
+                command.Dispose();
                 command = new SQLiteCommand("select * From " + TermTable + " WHERE " + termCol2 + " = \"" + term + "\"", m_dbConnection);
                 reader = command.ExecuteReader();
+                command.Dispose();
             }
+
             reader.Read();
             termID = reader.GetInt32(0);
-            
-                
+            reader.Dispose();
+
+
 
             command = new SQLiteCommand("select " + DocCol1 + " From " + DocTable + " WHERE " + DocCol1 + " = \"" + docId + "\" AND " + termCol1 + " = "+termID, m_dbConnection);
             reader = command.ExecuteReader();
+            command.Dispose();
             if (reader.StepCount == 0)
             {
                 command = new SQLiteCommand("Insert into " + DocTable + "( " + DocCol1 + " , " + DocCol2 + " , " + DocCol3 + " ) Values ( \"" + docId + "\" , " + termID + " , " + 1 + " )", m_dbConnection);
@@ -68,11 +74,13 @@ namespace WebCrawler
             }
             else
             {
-                command = new SQLiteCommand("UPDATE " + DocTable + " SET " + DocCol3 + " = " + DocCol3 + " + 1 WHERE " + DocCol1 + " = \" AND " + termCol1 + " = " + termID, m_dbConnection);
+                command = new SQLiteCommand("UPDATE " + DocTable + " SET " + DocCol3 + " = " + DocCol3 + " + 1 WHERE " + DocCol1 + " = '" + docId + "' AND " + termCol1 + " = " + termID, m_dbConnection);
                 command.ExecuteNonQuery();
             }
-
+            reader.Dispose();
+            command.Dispose();
             m_dbConnection.Close();
+            Console.WriteLine(termID + docId);
         }
 
         public int[] getTermCount(string docID)

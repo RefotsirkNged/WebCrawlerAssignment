@@ -1,6 +1,8 @@
 
 WebCrawler/bin/Debug/
 
+WebCrawler/packages.config
+
 \.vs/WebCrawler/v14/\.suo
 
 WebCrawler/obj/Debug/
