@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WebCrawler
 {
-    class DataBaseHelper
+    class DatabaseHelper
     {
         private const string DataBaseName = "TermDataBase.sqlite";
 
@@ -22,7 +22,7 @@ namespace WebCrawler
 
         private SQLiteConnection m_dbConnection;
 
-        public DataBaseHelper()
+        public DatabaseHelper()
         {
             SQLiteConnection.CreateFile(DataBaseName);
 
