@@ -9,7 +9,7 @@ namespace WebCrawler
 {
     class DatabaseHelper
     {
-        private const string DataBaseName = "TermDataBase.sqlite";
+        private const string DatabaseName = "TermDatabase.sqlite";
 
         private const string TermTable = "TermTable";
         private const string termCol1 = "TermID";
@@ -24,9 +24,9 @@ namespace WebCrawler
 
         public DatabaseHelper()
         {
-            SQLiteConnection.CreateFile(DataBaseName);
+            SQLiteConnection.CreateFile(DatabaseName);
 
-            m_dbConnection = new SQLiteConnection("Data Source=" + DataBaseName + ";Version=3;");
+            m_dbConnection = new SQLiteConnection("Data Source=" + DatabaseName + ";Version=3;");
             m_dbConnection.Open();
 
             string sqlTable1 = "create table " + TermTable + " (" + termCol1 + " INTEGER PRIMARY KEY AUTOINCREMENT , " + termCol2 + " TEXT)";
@@ -82,7 +82,7 @@ namespace WebCrawler
             return count;
         }
 
-        public void CloseDataBase()
+        public void CloseDatabase()
         {
             m_dbConnection.Close();
         }
