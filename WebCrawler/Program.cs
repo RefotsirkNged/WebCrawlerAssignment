@@ -17,8 +17,8 @@ namespace WebCrawler
 
             List<string> seed = new List<string>
             {
-                "https://www.icrc.org",
-                "https://www.amnesty.org/"
+                "https://www.cam.ac.uk",
+                "http://www.ed.ac.uk"
 
 
             };

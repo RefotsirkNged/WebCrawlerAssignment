@@ -97,13 +97,13 @@ namespace WebCrawler
             while (frontier.Count > 0 && actualIndex.TermsCount < 10)
             {
                 string url = frontier.Dequeue();
+                Console.WriteLine("Loading :" + url);
                 string result = CrawlPage(new Uri(url));
                 if (!CheckIfContentAlreadySeen(result))
                 {
                     if (!index.ContainsKey(url))
                     {
                         actualIndex.IndexDocument(url, StripHTML(result));
-                        Console.WriteLine(url);
                         foreach (string link in ExtractLinks(result))
                         {
                             Uri hostPage = new Uri(url);
@@ -118,6 +118,7 @@ namespace WebCrawler
                                      !GenerallyDisallowedActions.Any(x => link.Contains(x)))
                                 AddToFrontier(url + link);
                         }
+                        Console.WriteLine("Finish loading :" + url);
                     }
                     else
                         Console.WriteLine("URL already in index");
@@ -149,6 +150,9 @@ namespace WebCrawler
                         char[] stringAsCharArray = line.ToCharArray();
                         for (int i = line.IndexOf("href=\""); i < line.Length; i++)
                         {
+                            if (stringAsCharArray[i] == '?' || stringAsCharArray[i] == '#')
+                                break;
+
                             if (stringAsCharArray[i] == '"')
                             {
                                 if (foundQuote)
@@ -168,8 +172,7 @@ namespace WebCrawler
                     line = reader.ReadLine();
                 }
             }
-
-
+           
             return links;
         }
 
@@ -198,7 +201,7 @@ namespace WebCrawler
                     if (!robotsIndex.ContainsKey(host))
                     {
                         RobotsParser rb = new RobotsParser();
-                        robotsIndex.Add(host, rb.ParseRobots(host + @"/robots.txt"));
+                        robotsIndex.Add(host, rb.ParseRobots(host));
                     }
                     string result = sr.ReadToEnd();
                     return result;
@@ -208,7 +211,7 @@ namespace WebCrawler
             {
                 //var responseCode = ((HttpWebResponse)ex.Response).StatusDescription;
                 //Console.WriteLine("Request returned error:" + responseCode);
-                Console.WriteLine("Error: " + url);
+                Console.WriteLine("Error: " + url + "\n" + ex.Message);
             }
             return "";
         }

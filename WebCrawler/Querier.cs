@@ -13,8 +13,8 @@ namespace WebCrawler
 
         public static List<string> Query(Dictionary<string, bool> queries, DatabaseHelper db)
         {
+            
             List<string> results = new List<string>();
-            List<string> tempResults = new List<string>();
 			Dictionary<string, bool> stemmedQueries = new Dictionary<string, bool>();
             PorterStemmer stemmer = new PorterStemmer();
             bool isFirst = false;
@@ -37,12 +37,12 @@ namespace WebCrawler
                 else if(!isFirst)
                 {
                     isFirst = true;
-                    tempResults.AddRange(queryResults);
+                    results.AddRange(queryResults);
                 }
                 else
                 {
-                    temp.AddRange(db.QueryTerm(key).Where(r => tempResults.Contains(r)));
-                    tempResults = temp;
+                    temp.AddRange(db.QueryTerm(key).Where(r => results.Contains(r)));
+                    results = temp;
                 }
             }
 
