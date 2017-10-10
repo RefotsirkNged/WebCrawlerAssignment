@@ -22,13 +22,13 @@ namespace WebCrawler
                 stemmedQueries.Add(stemmer.stem(key), queries[key]);
             }
 
-            foreach (string key in stemmedQueries.Keys.Where(q => queries[q]))
+            foreach (string key in stemmedQueries.Keys.Where(q => stemmedQueries[q]))
             {
                 results.AddRange(db.QueryTerm(key));
-                    
+                int i = 9;
             }
 
-			foreach (string key in stemmedQueries.Keys.Where(q => !queries[q]))
+			foreach (string key in stemmedQueries.Keys.Where(q => !stemmedQueries[q]))
 			{
 				foreach (string term in db.QueryTerm(key))
 				{

@@ -81,7 +81,7 @@ namespace WebCrawler
                         }
                         else
                         {
-                            words.Add(word.Split(' ')[0].Trim(), false);
+                            words.Add(word.Split(' ')[0].Trim(), true);
                         }
                     }
 
