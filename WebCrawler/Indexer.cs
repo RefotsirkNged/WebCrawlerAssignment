@@ -56,7 +56,7 @@ namespace WebCrawler
                 //    terms[word].AddDocument(url);
                 //}
 
-                db.InsertTerm(word, url);
+                db.UpdateOrInsertPair(word, url);
             }
         }
 
