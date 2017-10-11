@@ -33,31 +33,37 @@ namespace WebCrawler
                 document = document.Replace(symbol, "");
             }
 
-            List<string> words = document.Split(' ').Where(w => w != string.Empty).ToList();
+            document = document.Replace("\n", " ");
 
-            foreach (string word in stopWords)
+            List<string> words = document.Split(null).Where(w => w != string.Empty).ToList();
+
+            foreach (string word in words)
             {
-                words.Remove(word);
+                word.Trim();
             }
+
+            //foreach (string word in stopWords)
+            //{
+                words.RemoveAll(w => stopWords.Contains(w));
+            //}
 
             for (int i = 0; i < words.Count(); i++)
             {
                 words[i] = stemmer.stem(words[i]);
             }
 
-            foreach (string word in words)
-            {
-                //if(terms.ContainsKey(word)){
-                //    terms[word].AddDocument(url);
-                //}
-                //else
-                //{
-                //    terms.Add(word, new TermVector(word));
-                //    terms[word].AddDocument(url);
-                //}
 
-                db.UpdateOrInsertPair(word, url);
-            }
+            //if(terms.ContainsKey(word)){
+            //    terms[word].AddDocument(url);
+            //}
+            //else
+            //{
+            //    terms.Add(word, new TermVector(word));
+            //    terms[word].AddDocument(url);
+            //}
+
+            db.UpdateOrInsertPair(words, url);
+
         }
 
         

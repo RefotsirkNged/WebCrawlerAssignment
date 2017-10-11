@@ -39,6 +39,7 @@ namespace WebCrawler
             ".png",
             ".jpg",
             ".gif",
+            ".pdf",
             ".jpeg",
             ".mp3",
             ".mp4",

@@ -32,13 +32,13 @@ namespace WebCrawler
         public DatabaseHelper()
         {
 
-            if (!File.Exists(Directory.GetCurrentDirectory() +  "//TermDatabase.sqlite"))
+            if (!File.Exists(Directory.GetCurrentDirectory() + "//TermDatabase.sqlite"))
             {
                 SQLiteConnection.CreateFile(DatabaseName);
                 m_dbConnection = new SQLiteConnection("Data Source=" + DatabaseName + ";Version=3;");
                 m_dbConnection.Open();
 
-                string sqlTable1 = "create table " + Terms + " (" + termIDCol + " INTEGER PRIMARY KEY AUTOINCREMENT , " + termCol + " TEXT)";
+                string sqlTable1 = "create table " + Terms + " (" + termIDCol + " INTEGER PRIMARY KEY AUTOINCREMENT , " + termCol + " TEXT UNIQUE)";
                 string sqlTable2 = "create table " + Documents + " (" + docIDCol + " TEXT , " + docTermFKCol + " INTEGER , " + docTermCountCol + " INTEGER )";
 
                 SQLiteCommand command = new SQLiteCommand(sqlTable1, m_dbConnection);
@@ -47,7 +47,7 @@ namespace WebCrawler
                 command.ExecuteNonQuery();
             }
             else
-            {   
+            {
                 m_dbConnection = new SQLiteConnection("Data Source=" + Directory.GetCurrentDirectory() + "\\" + DatabaseName + ";Version=3;");
             }
 
@@ -56,42 +56,58 @@ namespace WebCrawler
         }
 
 
-        public void UpdateOrInsertPair(string term, string docID)
+        public void UpdateOrInsertPair(List<string> terms, string docID)
         {
             m_dbConnection.Open();
+            SQLiteCommand sqlCommand;
+            sqlCommand = new SQLiteCommand("begin", m_dbConnection);
+            sqlCommand.ExecuteNonQuery();
+            Dictionary<string, int> termsList = new Dictionary<string, int>();
 
-            int termID = 0;
-            DBStatus termStatus = GetTermDBStatus(term);
 
-            switch (termStatus)
+            foreach (string term in terms)
             {
-                case DBStatus.NotExist:
-                    int newTermID = InsertTermInDb(term);
-                    UpdateOrInsertDoc(docID, newTermID); 
-                    break;
+                if (!termsList.ContainsKey(term))
+                {
+                    termsList.Add(term, 0);
+                }
+                termsList[term] += 1;
 
-                case DBStatus.Exist:
-                    //We do not need to update the term in this case just the document
-                    termID = GetTermID(term);
-                    UpdateOrInsertDoc(docID, termID);
-                    break;
-                default:
-                    Console.WriteLine("Something went wrong");
-                    break;
+                //DBStatus termStatus = GetTermDBStatus(term);
+
+                //switch (termStatus)
+                //{
+                //    case DBStatus.NotExist:
+                
+                //        break;
+
+                //    case DBStatus.Exist:
+                //        //We do not need to update the term in this case just the document
+                //        termID = GetTermID(term);
+                //        UpdateOrInsertDoc(docID, termID);
+                //        break;
+                //    default:
+                //        Console.WriteLine("Something went wrong");
+                //        break;
+                //}
             }
+            foreach(var term in termsList)
+            {
+                long newTermID = InsertTermInDb(term.Key);
+                UpdateOrInsertDoc(docID, newTermID, term.Value);
+            }
+            
 
+            sqlCommand = new SQLiteCommand("end", m_dbConnection);
+            sqlCommand.ExecuteNonQuery();
             m_dbConnection.Close();
         }
 
-        private int InsertTermInDb(string term)
+        private long InsertTermInDb(string term)
         {
-            int termID = -1;
-            //Insert the term, get the termID out, to use when inserting the doc
-            using (SQLiteCommand command = new SQLiteCommand("Insert into " + Terms + "( " + termCol + " ) Values ( '" + term + "' )", m_dbConnection))
-            {
-                command.ExecuteNonQuery();
-            }
-            using (SQLiteCommand command = new SQLiteCommand("select * From " + Terms + " WHERE " + termCol + " = \"" + term + "\"", m_dbConnection))
+            long termID = -1;
+            //Insert the term, get the termID out, to use when inserting the doc2
+            using (SQLiteCommand command = new SQLiteCommand("Insert or Ignore into " + Terms + "( " + termCol + " ) Values ( '" + term + "' ); Select " + termIDCol + " FROM " + Terms + " WHERE " + termCol + " = '" + term + "'", m_dbConnection))
             {
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {
@@ -99,29 +115,42 @@ namespace WebCrawler
                     termID = reader.GetInt32(0);
                 }
             }
+
+
+            //using (SQLiteCommand command = new SQLiteCommand("select * From " + Terms + " WHERE " + termCol + " = \"" + term + "\"", m_dbConnection))
+            //{
+            //    using (SQLiteDataReader reader = command.ExecuteReader())
+            //    {
+            //        reader.Read();
+            //        termID = reader.GetInt32(0);
+            //    }
+            //}
             return termID;
         }
 
-        private void UpdateOrInsertDoc(string docID, int termID)
+        private void UpdateOrInsertDoc(string docID,  long termID, int termCount)
         {
-            DBStatus docStatus = GetDocDBStatus(docID);
+            //DBStatus docStatus = GetDocDBStatus(docID);
 
-            switch (docStatus)
+            //switch (docStatus)
+            //{
+            //    case DBStatus.NotExist:
+            // new SQLiteCommand("UPDATE " + Documents + " SET " + docTermCountCol + " = " + docTermCountCol + " + " + term.Item2 + " WHERE " + docIDCol + " = '" + docID + "' AND " + termIDCol + " = " + term.Item1 + "; " +
+            //"Insert into " + Documents + "( " + docIDCol + " , " + docTermFKCol + " , " + docTermCountCol + " ) Select  \"" + docID + "\" , " + term.Item1 + " , " + term.Item2 + "   WHERE (Select Changes() = 0);", m_dbConnection))
+
+            using (SQLiteCommand command = new SQLiteCommand("Insert into " + Documents + "( " + docIDCol + " , " + docTermFKCol + " , " + docTermCountCol + " ) VALUES ( \"" + docID + "\" , " +  termID + " , " + termCount + " )", m_dbConnection))
             {
-                case DBStatus.NotExist:
-                    using (SQLiteCommand command = new SQLiteCommand("Insert into " + Documents + "( " + docIDCol + " , " + docTermFKCol + " , " + docTermCountCol + " ) Values ( \"" + docID + "\" , " + termID + " , " + 1 + " )", m_dbConnection))
-                    {
-                        command.ExecuteNonQuery();
-                    }
-                    break;
-
-                case DBStatus.Exist:
-                    using (SQLiteCommand command = new SQLiteCommand("UPDATE " + Documents + " SET " + docTermCountCol + " = " + docTermCountCol + " + 1 WHERE " + docIDCol + " = '" + docID + "' AND " + termIDCol + " = " + termID, m_dbConnection))
-                    {
-                        command.ExecuteNonQuery();
-                    }
-                    break;
+                command.ExecuteNonQuery();
             }
+            //        break;
+
+            //    case DBStatus.Exist:
+            //        using (SQLiteCommand command = new SQLiteCommand("UPDATE " + Documents + " SET " + docTermCountCol + " = " + docTermCountCol + " + 1 WHERE " + docIDCol + " = '" + docID + "' AND " + termIDCol + " = " + termID, m_dbConnection))
+            //        {
+            //            command.ExecuteNonQuery();
+            //        }
+            //        break;
+            //}
         }
 
         private int GetTermID(string term)
@@ -217,7 +246,7 @@ namespace WebCrawler
             SQLiteCommand command = new SQLiteCommand("select * From " + Documents + " WHERE " + docIDCol + " = \"" + docID + "\"", m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
             int[] count = new int[reader.StepCount];
-            for(int i = 0; i < reader.StepCount; i++)
+            for (int i = 0; i < reader.StepCount; i++)
             {
                 reader.Read();
                 count[i] = reader.GetInt32(2);
@@ -236,33 +265,33 @@ namespace WebCrawler
 
             using (SQLiteCommand command = new SQLiteCommand("SELECT " + termIDCol + " FROM " + Terms + " WHERE " + termCol + " = '" + term + "'", m_dbConnection))
             {
-                using(SQLiteDataReader reader = command.ExecuteReader())
+                using (SQLiteDataReader reader = command.ExecuteReader())
                 {
-					for (int i = 0; i < reader.StepCount; i++)
-					{
-						reader.Read();
-						termID = reader.GetInt32(0);
-					}
+                    for (int i = 0; i < reader.StepCount; i++)
+                    {
+                        reader.Read();
+                        termID = reader.GetInt32(0);
+                    }
                 }
             }
 
 
             using (SQLiteCommand command = new SQLiteCommand("SELECT " + docIDCol + " FROM " + Documents + " WHERE " + docTermFKCol + " = '" + termID + "'", m_dbConnection))
-			{
-				using (SQLiteDataReader reader = command.ExecuteReader())
-				{
-					for (int i = 0; i < reader.StepCount; i++)
-					{
-						reader.Read();
+            {
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    for (int i = 0; i < reader.StepCount; i++)
+                    {
+                        reader.Read();
                         results.Add(reader.GetString(0));
-					}
-				}
-			}
+                    }
+                }
+            }
 
-			m_dbConnection.Close();
+            m_dbConnection.Close();
 
             return results;
-        } 
+        }
 
         public void CloseDatabase()
         {
