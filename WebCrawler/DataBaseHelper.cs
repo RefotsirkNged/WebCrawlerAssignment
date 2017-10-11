@@ -216,7 +216,6 @@ namespace WebCrawler
             reader.Dispose();
             command.Dispose();
             m_dbConnection.Close();
-            Console.WriteLine(termID + docId);  
         }
 
         public int[] getTermCount(string docID)
