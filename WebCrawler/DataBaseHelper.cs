@@ -23,7 +23,7 @@ namespace WebCrawler
 
         private enum DBStatus
         {
-            NotExist = 1,
+            NotExist,
             Exist
         }
 
@@ -31,7 +31,7 @@ namespace WebCrawler
 
         public DatabaseHelper()
         {
-            //TODO: add some kind of check to see if the file already exists? or is that already handled
+
             if (!File.Exists(Directory.GetCurrentDirectory() +  "//TermDatabase.sqlite"))
             {
                 SQLiteConnection.CreateFile(DatabaseName);
@@ -127,7 +127,7 @@ namespace WebCrawler
         private int GetTermID(string term)
         {
             int termID = -1;
-            using (SQLiteCommand command = new SQLiteCommand("select * From " + Terms + " WHERE " + termCol + " = \"" + term + "\"", m_dbConnection))
+            using (SQLiteCommand command = new SQLiteCommand("select " + termIDCol + " From " + Terms + " WHERE " + termCol + " = \"" + term + "\"", m_dbConnection))
             {
                 SQLiteDataReader reader = command.ExecuteReader();
                 termID = reader.GetInt32(0);
@@ -137,19 +137,13 @@ namespace WebCrawler
         private DBStatus GetTermDBStatus(string term)
         {
             DBStatus termStatus;
-            string readDocID = "select * From " + Terms + " WHERE " + termCol + " = \"" + term + "\"";
+            string readDocID = "select count(*) From " + Terms + " WHERE " + termCol + " = \"" + term + "\"";
 
             using (SQLiteCommand command = new SQLiteCommand(readDocID, m_dbConnection))
             {
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {
-                    var temp = reader.StepCount;
-                    if (temp <= 1)
-                    {
-                        termStatus = DBStatus.NotExist;
-                    }
-                    else
-                        termStatus = DBStatus.Exist;
+                    termStatus = reader.HasRows ? DBStatus.NotExist : DBStatus.Exist;
                 }
             }
             return termStatus;
@@ -157,12 +151,12 @@ namespace WebCrawler
         private DBStatus GetDocDBStatus(string docID)
         {
             DBStatus docStatus;
-            string readDocStatus = "select * From " + Documents + " WHERE " + docIDCol + " =\"" + docID + "\"";
+            string readDocStatus = "select count(*) From " + Documents + " WHERE " + docIDCol + " = \"" + docID + "\"";
             using (SQLiteCommand command = new SQLiteCommand(readDocStatus, m_dbConnection))
             {
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {
-                    docStatus = (DBStatus) reader.StepCount;
+                    docStatus = reader.HasRows ? DBStatus.NotExist : DBStatus.Exist;
                 }
             }
             return docStatus;
