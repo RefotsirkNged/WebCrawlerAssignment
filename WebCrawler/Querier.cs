@@ -57,5 +57,44 @@ namespace WebCrawler
 			
             return results;
         }
+
+        //Only support "And" and "Or"
+        //TODO should be testes
+        public HashSet<string> BinaryQueqe(Dictionary<string, TermVector> invertList, string stringQueqe)
+        {
+            HashSet<string> resualt = new HashSet<string>();
+            HashSet<string> newResualt = new HashSet<string>();
+            string[] splitQueqe = stringQueqe.Split(' ');
+            TermVector startResualt;
+            invertList.TryGetValue(splitQueqe[0], out startResualt);
+            foreach (string elm in startResualt.documents)
+                resualt.Add(elm);
+            for(int i = 2; i < splitQueqe.Length; i++)
+            {
+                
+                if(splitQueqe[i-1] == "And")
+                {
+                    invertList.TryGetValue(splitQueqe[i], out startResualt);
+                    foreach (string elm in startResualt.documents)
+                    {
+                        if (resualt.Contains(elm))
+                            newResualt.Add(elm);
+                    }
+                    resualt = newResualt;
+                }
+                else if(splitQueqe[i - 1] == "Or")
+                {
+                    foreach (string elm in startResualt.documents)
+                    {
+                        newResualt.Add(elm);
+                    }
+                }
+                else
+                    Console.Out.WriteLine("Error in BinaryQueqe not matching binary command");
+                
+            }
+
+            return resualt;
+        }
     }
 }
