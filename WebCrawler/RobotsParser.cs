@@ -22,7 +22,7 @@ namespace WebCrawler
         {
             using (WebClient client = new WebClient())
             {
-                Stream robotStream = client.OpenRead((url.Contains("http") ? "" : "http://") + url + "/robots.txt");
+                Stream robotStream = client.OpenRead((url.Contains("http") ? "" : "http://") + url + @"/robots.txt");
                 StreamReader sr = new StreamReader(robotStream);
                 List<string> results = new List<string>();
                 ParserState pstate = ParserState.LookingForSegment;

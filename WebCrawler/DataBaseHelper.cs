@@ -276,14 +276,16 @@ namespace WebCrawler
             }
 
 
-            using (SQLiteCommand command = new SQLiteCommand("SELECT " + docIDCol + " FROM " + Documents + " WHERE " + docTermFKCol + " = '" + termID + "'", m_dbConnection))
+            using (SQLiteCommand command = new SQLiteCommand("SELECT " + docIDCol + " FROM " + Documents + " WHERE " + docTermFKCol + " = " + termID , m_dbConnection))
             {
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {
-                    for (int i = 0; i < reader.StepCount; i++)
-                    {
-                        reader.Read();
-                        results.Add(reader.GetString(0));
+                    if (reader.HasRows) {
+                        while (reader.Read())
+                        {
+                            results.Add(reader.GetString(0));
+                        }
+                       
                     }
                 }
             }
