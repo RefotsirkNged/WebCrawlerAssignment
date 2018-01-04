@@ -6,29 +6,28 @@ namespace WebCrawler
     public class TermVector
     {
         public string term;
-        private int ID;
+        private int id;
 
         //Document (url) and frequenzy
-        private Dictionary<string, int> documents;
+        public List<string> documents;
 
-        public TermVector(string term)
+        public TermVector(string term, int id)
         {
             this.term = term;
-            documents = new Dictionary<string, int>();
+            this.id = id;
+            documents = new List<string>();
         }
 
-        public Dictionary<string, int> Documents
+        public int DocFrekensi { get { return documents.Count; } }
+        public int ID { get { return id; } }  
+
+        public List<string> Queqe(string queqeString)
         {
-            get { return documents; }
-        }
+            List<string> resualt = new List<string>();
 
-        public void AddDocument(string document)
-		{
-            if (documents.ContainsKey(document))
-                documents[document]++;
-            else
-                documents[document] = 1;
-		}
-    
+            string[] and = queqeString.Split(new string[] {"and"}, StringSplitOptions.None);
+
+            return resualt;
+        }
     }
 }

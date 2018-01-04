@@ -9,12 +9,10 @@ namespace WebCrawler
     public class Indexer
     {
         private string[] stopWords;
-        private Dictionary<string, TermVector> terms;
 
         public Indexer()
         {
             stopWords = File.ReadAllLines("..\\Resources\\StopWords.txt");
-            terms = new Dictionary<string, TermVector>();
         }
 
         public int TermsCount
@@ -42,25 +40,12 @@ namespace WebCrawler
                 word.Trim();
             }
 
-            //foreach (string word in stopWords)
-            //{
-                words.RemoveAll(w => stopWords.Contains(w));
-            //}
+            words.RemoveAll(w => stopWords.Contains(w));
 
             for (int i = 0; i < words.Count(); i++)
             {
                 words[i] = stemmer.stem(words[i]);
             }
-
-
-            //if(terms.ContainsKey(word)){
-            //    terms[word].AddDocument(url);
-            //}
-            //else
-            //{
-            //    terms.Add(word, new TermVector(word));
-            //    terms[word].AddDocument(url);
-            //}
 
             db.UpdateOrInsertPair(words, url);
 
