@@ -100,5 +100,58 @@ namespace WebCrawler
 
             return resualt;
         }
+
+        public List<string> TFIDFQuery(Dictionary<string, TermVector> invertList, string stringQuery)
+        {
+            Dictionary<string, double> temp = new Dictionary<string, double>();
+            HashSet<string> result = new HashSet<string>();
+            string[] querySplit = stringQuery.Split(' ');
+
+            foreach (string query in querySplit)
+            {
+                foreach (KeyValuePair<string, int> doc in invertList[query].documents)
+                {
+                    if (temp.Keys.Contains(doc.Key))
+                        temp[doc.Key] = invertList[query].tfidf(doc.Key);
+                    else
+                        temp.Add(doc.Key, invertList[query].tfidf(doc.Key));
+                }
+            }
+
+            return temp.Keys.OrderByDescending(k => temp[k]).ToList<string>();
+        }
+
+        public List<string> VectorQuery(Dictionary<string, TermVector> invertList, string stringQuery)
+        {
+            HashSet<string> result = new HashSet<string>();
+            string[] querySplit = stringQuery.Split(' ');
+            Dictionary<string, double[]> documentVectorPairs = new Dictionary<string, double[]>();
+            PorterStemmer stemmer = new PorterStemmer();
+            for (int i = 0; i < querySplit.Length; i++)
+                querySplit[i] = stemmer.stem(querySplit[i]);
+
+            for (int i = 0; i < querySplit.Length; i++)
+            {
+                if (!invertList.Keys.Contains(querySplit[i]))
+                    continue;
+                foreach (KeyValuePair<string, int> doc in invertList[querySplit[i]].documents)
+                {
+                    if (documentVectorPairs.Keys.Contains(doc.Key))
+                    {
+                        documentVectorPairs[doc.Key][i] = invertList[querySplit[i]].tfidf(doc.Key);
+                    }
+                        
+                    else
+                    {
+                        documentVectorPairs.Add(doc.Key, new double[querySplit.Length]);
+                        documentVectorPairs[doc.Key][i] = invertList[querySplit[i]].tfidf(doc.Key);
+                    }
+                        
+                }
+            }
+
+
+            return documentVectorPairs.Keys.OrderByDescending(k => documentVectorPairs[k]).ToList<string>();
+        }
     }
 }
