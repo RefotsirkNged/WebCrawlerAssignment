@@ -8,3 +8,9 @@ WebCrawler/packages.config
 WebCrawler/obj/Debug/
 
 \.vs/WebCrawler/v14/
+
+WebCrawler/Resources/StopWords\.txt
+
+WebCrawler/Resources/Symbols\.txt
+
+WebCrawler/obj/

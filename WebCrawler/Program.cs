@@ -31,7 +31,8 @@ namespace WebCrawler
 				var response = Console.ReadLine();
                 if (response == "1")
                 {
-                    Console.WriteLine("not used.");
+                    DatabaseHelper hlp = new DatabaseHelper();
+                    hlp.CreateInvertedTerms();
                 }
                 else if (response == "2")
                 {

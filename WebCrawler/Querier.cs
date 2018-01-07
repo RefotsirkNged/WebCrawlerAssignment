@@ -13,9 +13,9 @@ namespace WebCrawler
 
         public static List<string> Query(Dictionary<string, bool> queries, DatabaseHelper db)
         {
-            
+            Dictionary<string, TermVector> invertedList = db.CreateInvertedTerms();
             List<string> results = new List<string>();
-			Dictionary<string, bool> stemmedQueries = new Dictionary<string, bool>();
+            Dictionary<string, bool> stemmedQueries = new Dictionary<string, bool>();
             PorterStemmer stemmer = new PorterStemmer();
             bool isFirst = false;
 
@@ -26,7 +26,7 @@ namespace WebCrawler
 
             foreach (string key in stemmedQueries.Keys.Where(q => stemmedQueries[q]))
             {
-                List<string> temp = new List<string>();
+                /*List<string> temp = new List<string>();
                 List<string> queryResults = db.QueryTerm(key);
 
                 if(queryResults.Count() == 0)
@@ -43,18 +43,22 @@ namespace WebCrawler
                 {
                     temp.AddRange(db.QueryTerm(key).Where(r => results.Contains(r)));
                     results = temp;
-                }
+                }*/
+
+                if (invertedList.ContainsKey(key))
+                    results.AddRange(invertedList[key].documents.Keys);
             }
 
-			foreach (string key in stemmedQueries.Keys.Where(q => !stemmedQueries[q]))
-			{
-				foreach (string term in db.QueryTerm(key))
-				{
-                    results.Remove(term);
-                }
-			}
+            foreach (string key in stemmedQueries.Keys.Where(q => !stemmedQueries[q]))
+            {
+                if (invertedList.ContainsKey(key))
+                    foreach (string document in invertedList[key].documents.Keys)
+                    {
+                        results.Remove(document);
+                    }
+            }
 
-			
+
             return results;
         }
 
@@ -67,7 +71,7 @@ namespace WebCrawler
             string[] splitQueqe = stringQueqe.Split(' ');
             TermVector startResualt;
             invertList.TryGetValue(splitQueqe[0], out startResualt);
-            foreach (string elm in startResualt.documents)
+            foreach (string elm in startResualt.documents.Keys)
                 resualt.Add(elm);
             for(int i = 2; i < splitQueqe.Length; i++)
             {
@@ -75,7 +79,7 @@ namespace WebCrawler
                 if(splitQueqe[i-1] == "And")
                 {
                     invertList.TryGetValue(splitQueqe[i], out startResualt);
-                    foreach (string elm in startResualt.documents)
+                    foreach (string elm in startResualt.documents.Keys)
                     {
                         if (resualt.Contains(elm))
                             newResualt.Add(elm);
@@ -84,7 +88,7 @@ namespace WebCrawler
                 }
                 else if(splitQueqe[i - 1] == "Or")
                 {
-                    foreach (string elm in startResualt.documents)
+                    foreach (string elm in startResualt.documents.Keys)
                     {
                         newResualt.Add(elm);
                     }

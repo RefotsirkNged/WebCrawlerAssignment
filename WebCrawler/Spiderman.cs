@@ -95,7 +95,7 @@ namespace WebCrawler
 
         public void StartCrawl()
         {
-            while (frontier.Count > 0 && actualIndex.TermsCount < 10)
+            while (frontier.Count > 0)
             {
                 string url = frontier.Dequeue();
                 Console.WriteLine("Loading :" + url);

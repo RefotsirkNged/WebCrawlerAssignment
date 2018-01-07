@@ -15,10 +15,6 @@ namespace WebCrawler
             stopWords = File.ReadAllLines("..\\Resources\\StopWords.txt");
         }
 
-        public int TermsCount
-        {
-            get { return terms.Count; }
-        }
 
         public void IndexDocument(string url, string document)
         {
