@@ -7,7 +7,7 @@ namespace WebCrawler
     {
         public string term;
         private int id;
-        public static int TotalDocuments;
+        public static int TotalDocuments; //Total amount of documents in the database
 
         //Document (url) and frequenzy
         public Dictionary<string, int> documents;
@@ -39,9 +39,10 @@ namespace WebCrawler
             get { return Math.Log10(TotalDocuments / DocFrequency); }
         }
 
-        public double tfidf
+        //tfidf is for the specific term in a document
+        public double tfidf(string document)
         {
-            get { return math}
+            return documents[document] * Idf;
         }
     }
 }
