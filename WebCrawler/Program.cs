@@ -26,7 +26,7 @@ namespace WebCrawler
             while (true)
             {
                 Console.WriteLine("Would you like to load an index [1] and go from there, or crawl from a new seed [2], or crawl from the default seeds [3]");
-				Console.WriteLine("Or write [4] to make a query.");
+				Console.WriteLine("Or write [4] to make a query, or write [5] to make a cosine query.");
 
 				var response = Console.ReadLine();
                 if (response == "1")
@@ -94,12 +94,14 @@ namespace WebCrawler
                 else if (response == "5")
                 {
                     Dictionary<string, bool> words = new Dictionary<string, bool>();
-                    Console.WriteLine("Write the words you would like to query (Eks: duck AND bird AND NOT chicken)");
+                    Console.WriteLine("Write the words you would like to query (Eks: biggest country)");
                     string query = Console.ReadLine();
                     DatabaseHelper hlper = new DatabaseHelper();
-                    foreach (var result in Querier.CosineScore(hlper.CreateInvertedTerms(), query))
+                    Dictionary<string, double> resualt = Querier.CosineScore(hlper.CreateInvertedTerms(), query);
+                    List<string> keys = resualt.Keys.OrderByDescending(k => resualt[k]).ToList<string>();
+                    for(int i = 0; i < 10 && i < keys.Count; i++)
                     {
-                        Console.WriteLine(result.Key, result.Value);
+                        Console.WriteLine(keys[i] + " Score: " + resualt[keys[i]]);
                     }
                 }
                 else

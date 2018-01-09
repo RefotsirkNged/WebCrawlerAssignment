@@ -44,5 +44,13 @@ namespace WebCrawler
         {
             return documents[document] * Idf;
         }
+
+        public double tfStar(string document)
+        {
+            if (documents[document] == 0)
+                return 0;
+            else
+                return 1 + Math.Log10(documents[document]);
+        }
     }
 }

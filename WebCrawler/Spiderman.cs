@@ -99,6 +99,7 @@ namespace WebCrawler
             {
                 string url = frontier.Dequeue();
                 Console.WriteLine("Loading :" + url);
+
                 string result = CrawlPage(new Uri(url));
                 if (!CheckIfContentAlreadySeen(result))
                 {

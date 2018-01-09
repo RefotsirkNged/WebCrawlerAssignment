@@ -178,11 +178,20 @@ namespace WebCrawler
 
                 foreach (KeyValuePair<string, int> pairDocTermfreq in PostingListForTerm)
                 {
-                    var temp = termVector.tfidf(pairDocTermfreq.Key);
-                    Scores.Add(pairDocTermfreq.Key, (termVector.tfidf(pairDocTermfreq.Key)/WeightofTermInQuery));
+                    if (results.Keys.Contains(pairDocTermfreq.Key))
+                    {
+                        results[pairDocTermfreq.Key] += (termVector.tfStar(pairDocTermfreq.Key) / WeightofTermInQuery);
+                    }
+                    else
+                    {
+                        results.Add(pairDocTermfreq.Key, (termVector.tfStar(pairDocTermfreq.Key) / WeightofTermInQuery));
+                    }
+                    
                 }
-                results.Add(termVector.term, 1); //returns 1 cuz i dont know why it dont work (should return sum of the scores? i think)
+                //results.Add(termVector.term, 1); //returns 1 cuz i dont know why it dont work (should return sum of the scores? i think)
             }
+
+
             return results;
         }
 
