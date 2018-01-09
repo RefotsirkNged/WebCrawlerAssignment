@@ -91,6 +91,17 @@ namespace WebCrawler
                         Console.WriteLine(result);
                     }
                 }
+                else if (response == "5")
+                {
+                    Dictionary<string, bool> words = new Dictionary<string, bool>();
+                    Console.WriteLine("Write the words you would like to query (Eks: duck AND bird AND NOT chicken)");
+                    string query = Console.ReadLine();
+                    DatabaseHelper hlper = new DatabaseHelper();
+                    foreach (var result in Querier.CosineScore(hlper.CreateInvertedTerms(), query))
+                    {
+                        Console.WriteLine(result.Key, result.Value);
+                    }
+                }
                 else
                     Console.WriteLine("That was not a proper response!");
 

@@ -153,5 +153,40 @@ namespace WebCrawler
 
             return documentVectorPairs.Keys.OrderByDescending(k => documentVectorPairs[k]).ToList<string>();
         }
+
+        public static Dictionary<string, double> CosineScore(Dictionary<string, TermVector> index, string query)
+        {
+            Dictionary<string, double> results = new Dictionary<string, double>();
+            string[] querySplit = query.Split(' ');
+            Dictionary<string, double[]> documentVectorPairs = new Dictionary<string, double[]>();
+            PorterStemmer stemmer = new PorterStemmer();
+            for (int i = 0; i < querySplit.Length; i++)
+                querySplit[i] = stemmer.stem(querySplit[i]);
+
+
+            Dictionary<string, double> Scores = new Dictionary<string, double>();
+
+            foreach (string term in querySplit)
+            {
+                if (!index.ContainsKey(term)) //if the index does not contain the term, we can disregard it
+                {
+                    continue;
+                }
+                TermVector termVector = index[term]; //get the termvector for the term from the index
+                var WeightofTermInQuery = termVector.Idf;
+                var PostingListForTerm = termVector.documents;
+
+                foreach (KeyValuePair<string, int> pairDocTermfreq in PostingListForTerm)
+                {
+                    var temp = termVector.tfidf(pairDocTermfreq.Key);
+                    Scores.Add(pairDocTermfreq.Key, (termVector.tfidf(pairDocTermfreq.Key)/WeightofTermInQuery));
+                }
+                results.Add(termVector.term, 1); //returns 1 cuz i dont know why it dont work (should return sum of the scores? i think)
+            }
+            return results;
+        }
+
+
+
     }
 }
