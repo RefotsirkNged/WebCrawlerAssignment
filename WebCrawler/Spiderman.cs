@@ -105,8 +105,9 @@ namespace WebCrawler
                 {
                     if (!index.ContainsKey(url))
                     {
-                        actualIndex.IndexDocument(url, StripHTML(result));
-                        foreach (string link in ExtractLinks(result).Keys)
+                        Dictionary<string, string> links = ExtractLinks(result);
+                        actualIndex.IndexDocument(url, StripHTML(result), links);
+                        foreach (string link in links.Keys)
                         {
                             Uri hostPage = new Uri(url);
                             List<string> disallowedActions = robotsIndex[hostPage.Host].ToList();
@@ -160,7 +161,7 @@ namespace WebCrawler
                             {
                                 if (foundQuote)
                                 {
-                                    if (sb.ToString().Contains('?') || sb.ToString().Contains('#') || !sb.ToString().Contains("http"))
+                                    if (sb.ToString().Contains('?') || sb.ToString().Contains('#') || sb.ToString().Contains('\'') || !sb.ToString().Contains("http") || sb.ToString().StartsWith("/"))
                                         break;
                                     link = sb.ToString();
                                     ancorTextStart = true;

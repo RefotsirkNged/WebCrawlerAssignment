@@ -21,10 +21,15 @@ namespace WebCrawler
         private const string docTermFKCol = termIDCol;
         private const string docTermCountCol = "TermCount";
 
+        private const string DocumentsIndex = "DocumentIndex";
+        private const string docIndexID = "DocID";
+        private const string docDomainName = "DocDomainName";
+        private const string docPageRank = "PageRank";
 
-        private const string InvertTerm = "InvertedTerms";
-        private const string invertTermCol = "Term";
-        private const string invertDocFrikent = "DocFrequnt";
+
+        private const string DocLinks = "DocLinks";
+        private const string startDoc = "StartDoc";
+        private const string endDoc = "EndDoc";
 
         private enum DBStatus
         {
@@ -46,10 +51,18 @@ namespace WebCrawler
                                    " INTEGER PRIMARY KEY AUTOINCREMENT , " + termCol + " TEXT UNIQUE)";
                 string sqlTable2 = "create table " + Documents + " (" + docIDCol + " TEXT , " + docTermFKCol +
                                    " INTEGER , " + docTermCountCol + " INTEGER )";
+                string sqlTable3 = "create table " + DocLinks + " (" + startDoc + " TEXT , " + endDoc +
+                                   " TEXT )";
+                string sqlTable4 = "create table " + DocumentsIndex + " (" + docIndexID +
+                                   " INTEGER PRIMARY KEY AUTOINCREMENT , " + docDomainName + " TEXT UNIQUE)";
 
                 SQLiteCommand command = new SQLiteCommand(sqlTable1, m_dbConnection);
                 command.ExecuteNonQuery();
                 command = new SQLiteCommand(sqlTable2, m_dbConnection);
+                command.ExecuteNonQuery();
+                command = new SQLiteCommand(sqlTable3, m_dbConnection);
+                command.ExecuteNonQuery();
+                command = new SQLiteCommand(sqlTable4, m_dbConnection);
                 command.ExecuteNonQuery();
             }
             else
@@ -104,7 +117,7 @@ namespace WebCrawler
         }
 
 
-        public void UpdateOrInsertPair(List<string> terms, string docID)
+        public void UpdateOrInsertPair(List<string> terms, string docID, Dictionary<string, string> links)
         {
             m_dbConnection.Open();
             SQLiteCommand sqlCommand;
@@ -129,10 +142,34 @@ namespace WebCrawler
                 UpdateOrInsertDoc(docID, newTermID, term.Value);
             }
 
+            insertDocLinks(docID, links.Keys.ToList<string>());
+            insertDockument(docID);
 
             sqlCommand = new SQLiteCommand("end", m_dbConnection);
             sqlCommand.ExecuteNonQuery();
             m_dbConnection.Close();
+        }
+
+        private void insertDocLinks(string startLink, List<string> endLinks)
+        {
+            foreach(string endlink in endLinks)
+            {
+                using (SQLiteCommand command =
+                new SQLiteCommand(
+                    "Insert into " + DocLinks + " ( " + startDoc + " , " + endDoc + " ) VALUES ( '" + startLink + "' , '" + endlink + "' )", m_dbConnection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        private int[,] getTransitionProbabilityMatrix()
+        {
+            int totalDoc = TotalDocuments();
+            int[,] TransProbMatrix = new int[totalDoc,totalDoc];
+
+
+            return TransProbMatrix;
         }
 
         private long InsertTermInDb(string term)
@@ -171,6 +208,17 @@ namespace WebCrawler
                 new SQLiteCommand(
                     "Insert into " + Documents + "( " + docIDCol + " , " + docTermFKCol + " , " + docTermCountCol +
                     " ) VALUES ( \"" + docID + "\" , " + termID + " , " + termCount + " )", m_dbConnection))
+            {
+                command.ExecuteNonQuery();
+            }
+        }
+
+
+        private void insertDockument(string docID)
+        {
+            using (SQLiteCommand command =
+                new SQLiteCommand(
+                    "Insert into " + DocumentsIndex + "(  " + docDomainName + " ) VALUES (  '" + docID + "' )", m_dbConnection))
             {
                 command.ExecuteNonQuery();
             }

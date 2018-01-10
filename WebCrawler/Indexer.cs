@@ -16,7 +16,7 @@ namespace WebCrawler
         }
 
 
-        public void IndexDocument(string url, string document)
+        public void IndexDocument(string url, string document, Dictionary<string, string> links)
         {
             PorterStemmer stemmer = new PorterStemmer();
             List<string> symbols = File.ReadAllLines("..\\Resources\\Symbols.txt").ToList();
@@ -43,7 +43,7 @@ namespace WebCrawler
                 words[i] = stemmer.stem(words[i]);
             }
 
-            db.UpdateOrInsertPair(words, url);
+            db.UpdateOrInsertPair(words, url, links);
 
         }
 
