@@ -106,7 +106,7 @@ namespace WebCrawler
                     if (!index.ContainsKey(url))
                     {
                         actualIndex.IndexDocument(url, StripHTML(result));
-                        foreach (string link in ExtractLinks(result))
+                        foreach (string link in ExtractLinks(result).Keys)
                         {
                             Uri hostPage = new Uri(url);
                             List<string> disallowedActions = robotsIndex[hostPage.Host].ToList();
@@ -137,37 +137,52 @@ namespace WebCrawler
                 frontier.Enqueue(url);
         }
 
-        private List<string> ExtractLinks(string page)
+        private Dictionary<string, string> ExtractLinks(string page)
         {
-            List<string> links = new List<string>();
+            Dictionary<string, string> links = new Dictionary<string, string>();
             using (StringReader reader = new StringReader(page))
             {
                 string line = "";
                 while (line != null)
                 {
-                    if (line.Contains("href=\""))
+                    if (line.Contains("href=\"") && line.Contains("</a>") && !line.Contains("<img"))
                     {
                         StringBuilder sb = new StringBuilder();
                         bool foundQuote = false;
                         char[] stringAsCharArray = line.ToCharArray();
-                        for (int i = line.IndexOf("href=\""); i < line.Length; i++)
+                        string link = "";
+                        int ancorStart;
+                        bool ancorTextStart = false;
+                        for (int i = line.IndexOf("href=\""); i < stringAsCharArray.Length && i >= 0; i++)
                         {
-                            if (stringAsCharArray[i] == '?' || stringAsCharArray[i] == '#')
-                                break;
 
-                            if (stringAsCharArray[i] == '"')
+                            if (stringAsCharArray[i] == '"' && !ancorTextStart)
                             {
                                 if (foundQuote)
                                 {
-                                    links.Add(sb.ToString());
-                                    break;
+                                    if (sb.ToString().Contains('?') || sb.ToString().Contains('#') || !sb.ToString().Contains("http"))
+                                        break;
+                                    link = sb.ToString();
+                                    ancorTextStart = true;
                                 }
                                 foundQuote = true;
                             }
-                            else if (foundQuote)
+                            else if (foundQuote && !ancorTextStart)
                             {
                                 sb.Append(stringAsCharArray[i]);
                             }
+                            if(stringAsCharArray[i] == '>')
+                            {
+                                if(!links.ContainsKey(link))
+                                {
+                                    string ancorText = line.Substring(i + 1);
+                                    if(ancorText.Contains("</a>"))
+                                        ancorText = ancorText.Remove(ancorText.IndexOf("</a>"), ancorText.Length - ancorText.IndexOf("</a>"));
+                                    links.Add(link, ancorText);
+                                    break;
+                                }
+                            }
+
                         }
                     }
 
