@@ -8,6 +8,7 @@ namespace WebCrawler
         public string term;
         private int id;
         public static int TotalDocuments; //Total amount of documents in the database
+        private static double savedDocLeanght;
 
         //Document (url) and frequenzy
         public Dictionary<string, int> documents;
@@ -57,10 +58,15 @@ namespace WebCrawler
         {
             get
             {
-                double addDocTF = 0;
-                foreach (int tf in documents.Values)
-                    addDocTF += Math.Pow(tf, 2);
-                return Math.Sqrt(addDocTF);
+                if(savedDocLeanght == 0)
+                {
+                    double addDocTF = 0;
+                    foreach (int tf in documents.Values)
+                        addDocTF += Math.Pow(tf, 2);
+                    savedDocLeanght = Math.Sqrt(addDocTF);
+                }
+
+                return savedDocLeanght;
             }
         }
     }

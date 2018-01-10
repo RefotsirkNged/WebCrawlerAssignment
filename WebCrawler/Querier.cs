@@ -173,7 +173,7 @@ namespace WebCrawler
                     continue;
                 }
                 TermVector termVector = index[term]; //get the termvector for the term from the index
-                var WeightofTermInQuery = termVector.Idf;
+                var WeightofTermInQuery = termVector.docLeangt;
                 var PostingListForTerm = termVector.documents;
 
                 foreach (KeyValuePair<string, int> pairDocTermfreq in PostingListForTerm)
@@ -184,11 +184,10 @@ namespace WebCrawler
                     }
                     else
                     {
-                        results.Add(pairDocTermfreq.Key, (termVector.tfStar(pairDocTermfreq.Key) / WeightofTermInQuery));
+                        results.Add(pairDocTermfreq.Key, (termVector.tfidf(pairDocTermfreq.Key) / WeightofTermInQuery));
                     }
                     
                 }
-                //results.Add(termVector.term, 1); //returns 1 cuz i dont know why it dont work (should return sum of the scores? i think)
             }
 
 
