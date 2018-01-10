@@ -52,5 +52,16 @@ namespace WebCrawler
             else
                 return 1 + Math.Log10(documents[document]);
         }
+
+        public double docLeangt
+        {
+            get
+            {
+                double addDocTF = 0;
+                foreach (int tf in documents.Values)
+                    addDocTF += Math.Pow(tf, 2);
+                return Math.Sqrt(addDocTF);
+            }
+        }
     }
 }
