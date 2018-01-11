@@ -104,6 +104,12 @@ namespace WebCrawler
                         Console.WriteLine(keys[i] + " Score: " + resualt[keys[i]]);
                     }
                 }
+                else if(response == "6")
+                {
+                    DatabaseHelper hlper = new DatabaseHelper();
+                    hlper.getTransitionProbabilityMatrix();
+                }
+
                 else
                     Console.WriteLine("That was not a proper response!");
 

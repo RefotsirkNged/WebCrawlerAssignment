@@ -54,7 +54,7 @@ namespace WebCrawler
                 string sqlTable3 = "create table " + DocLinks + " (" + startDoc + " TEXT , " + endDoc +
                                    " TEXT )";
                 string sqlTable4 = "create table " + DocumentsIndex + " (" + docIndexID +
-                                   " INTEGER PRIMARY KEY AUTOINCREMENT , " + docDomainName + " TEXT UNIQUE)";
+                                   " INTEGER PRIMARY KEY AUTOINCREMENT , " + docDomainName + " TEXT UNIQUE, " + docPageRank + " DOUBLE )";
 
                 SQLiteCommand command = new SQLiteCommand(sqlTable1, m_dbConnection);
                 command.ExecuteNonQuery();
@@ -163,13 +163,123 @@ namespace WebCrawler
             }
         }
 
-        private int[,] getTransitionProbabilityMatrix()
+        public void getTransitionProbabilityMatrix()
         {
+
             int totalDoc = TotalDocuments();
-            int[,] TransProbMatrix = new int[totalDoc,totalDoc];
+            m_dbConnection.Open();
+            double[,] TransProbMatrix = new double[totalDoc, totalDoc];
+            for (int i = 0; i < totalDoc; i++)
+            {
+                for (int j = 0; j < totalDoc; j++)
+                {
+                    TransProbMatrix[i, j] = 0;
+                }
+            }
+            //Select DocID, endID from (SELECT StartDoc ,DocID AS endID FROM 'DocLinks', 'DocumentIndex' where EndDoc =  DocDomainName) , 'DocumentIndex' where StartDoc = DocDomainName;
+            using (SQLiteCommand command =
+            new SQLiteCommand("Select " + docIndexID + ", endID From ( SELECT StartDoc, DocID AS endID FROM " + DocLinks + " , " + DocumentsIndex + " where EndDoc = DocDomainName) , " + DocumentsIndex + " Where " + startDoc + " = " + docDomainName, m_dbConnection))
+            {
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        TransProbMatrix[reader.GetInt32(0) - 1, reader.GetInt32(1) - 1] = 1;
+                    }
+                }
+            }
+            for (int i = 0; i < totalDoc; i++)
+            {
+                double totalLinks = 0;
+                for (int j = 0; j < totalDoc; j++)
+                {
+                    totalLinks += TransProbMatrix[i, j];
+                }
+                if (totalLinks == 0)
+                    continue;
+                for (int j = 0; j < totalDoc; j++)
+                {
+                    TransProbMatrix[i, j] /= totalLinks;
+                }
+                
+            }
+            for (int i = 0; i < totalDoc; i++)
+            {
+                double totalLinks = 0;
+                for (int j = 0; j < totalDoc; j++)
+                {
+                    totalLinks += TransProbMatrix[i, j];
+                    TransProbMatrix[i, j] *= 0.9f;
+                    
+                }
+                
+                for (int j = 0; j < totalDoc; j++)
+                {
+                    if (totalLinks == 0)
+                        TransProbMatrix[i, j] += (1f / (double)totalDoc);
+                    else
+                        TransProbMatrix[i, j] += (1f / (double)totalDoc) * 0.1f;
+                }
+            }
+            for (int i = 0; i < totalDoc; i++)
+            {
+                double total = 0;
+                for (int j = 0; j < totalDoc; j++)
+                {
+                    total += TransProbMatrix[i, j];
+                }
+            }
+            m_dbConnection.Close();
+            calcutateRandomSurferPageRank(TransProbMatrix);
+        }
 
+        private void calcutateRandomSurferPageRank(double[,] TransProbMatrix)
+        {
 
-            return TransProbMatrix;
+            int totalDoc = TotalDocuments();
+            int steps = 50;
+            double[] pageRank = new double[totalDoc];
+            
+            Random rnd = new Random();
+            pageRank[rnd.Next(0, totalDoc)] = 1;
+            for(int i = 0; i < steps; i++)
+            {
+                double[] newPageRank = new double[totalDoc];
+                for (int j = 0; j < totalDoc; j++)
+                {
+                    for (int k = 0; k < totalDoc; k++)
+                    {
+                        newPageRank[k] += TransProbMatrix[j, k] * pageRank[j];
+                    }
+                }
+                pageRank = newPageRank;
+            }
+            insertPageRank(pageRank);
+        }
+
+        private void insertPageRank(double[] pageRank)
+        {
+
+            m_dbConnection.Open();
+            SQLiteCommand sqlCommand;
+            sqlCommand = new SQLiteCommand("begin", m_dbConnection);
+            sqlCommand.ExecuteNonQuery();
+            for(int i = 0; i < pageRank.Length; i++)
+            {
+                string commandString = "Update " + DocumentsIndex + " SET " + docPageRank + " = " + pageRank[i] + " WHERE " + docIndexID + " = " + (i + 1);
+                commandString = commandString.Replace(",", ".");
+                using (SQLiteCommand command =
+                new SQLiteCommand(
+                    commandString, m_dbConnection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+            
+
+            sqlCommand = new SQLiteCommand("end", m_dbConnection);
+            sqlCommand.ExecuteNonQuery();
+            m_dbConnection.Close();
         }
 
         private long InsertTermInDb(string term)
@@ -272,7 +382,7 @@ namespace WebCrawler
         {
             m_dbConnection.Open();
             int result;
-            using (SQLiteCommand command = new SQLiteCommand("Select count(*) from (Select count("+ docIDCol + ") From " + Documents + " group by " + docIDCol + ")", m_dbConnection))
+            using (SQLiteCommand command = new SQLiteCommand("Select count(*) from (Select count( "+docIndexID+" ) From "+DocumentsIndex+ " group by " + docIndexID + " )", m_dbConnection))
             {
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {
