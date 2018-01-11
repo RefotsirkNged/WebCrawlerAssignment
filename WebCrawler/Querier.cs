@@ -186,10 +186,29 @@ namespace WebCrawler
                     {
                         results.Add(pairDocTermfreq.Key, (termVector.tfidf(pairDocTermfreq.Key) / WeightofTermInQuery));
                     }
-                    
+
                 }
             }
 
+
+            return results;
+        }
+
+        public static Dictionary<string, double> CosineAndPageRankScore(Dictionary<string, TermVector> index, string query)
+        {
+            Dictionary<string, double> results = CosineScore(index,query);
+           
+            DatabaseHelper helper = new DatabaseHelper();
+            Dictionary<string, double> pageRanks = helper.getPageRank();
+            double pageRankWeight = 2;
+
+            foreach (string doc in pageRanks.Keys)
+            {
+                if (results.Keys.Contains(doc))
+                {
+                    results[doc] += pageRankWeight * pageRanks[doc];
+                }
+            }
 
             return results;
         }

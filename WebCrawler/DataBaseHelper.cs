@@ -312,6 +312,21 @@ namespace WebCrawler
             return termID;
         }
 
+        public Dictionary<string, double> getPageRank()
+        {
+            Dictionary<string, double> pageRanks = new Dictionary<string, double>();
+            using (SQLiteCommand command = new SQLiteCommand("SELECT " + docDomainName + " , " + docPageRank + " FROM " + DocumentsIndex, m_dbConnection))
+            {
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        pageRanks.Add(reader.GetString(0), reader.GetDouble(1));
+                    }
+                }
+            }
+            return pageRanks;
+        }
         private void UpdateOrInsertDoc(string docID, long termID, int termCount)
         {
             using (SQLiteCommand command =
