@@ -180,7 +180,7 @@ namespace WebCrawler
                 {
                     if (results.Keys.Contains(pairDocTermfreq.Key))
                     {
-                        results[pairDocTermfreq.Key] += (termVector.tfStar(pairDocTermfreq.Key) / WeightofTermInQuery);
+                        results[pairDocTermfreq.Key] += (termVector.tfidf(pairDocTermfreq.Key) / WeightofTermInQuery);
                     }
                     else
                     {
@@ -200,13 +200,12 @@ namespace WebCrawler
            
             DatabaseHelper helper = new DatabaseHelper();
             Dictionary<string, double> pageRanks = helper.getPageRank();
-            double pageRankWeight = 2;
 
             foreach (string doc in pageRanks.Keys)
             {
                 if (results.Keys.Contains(doc))
                 {
-                    results[doc] += pageRankWeight * pageRanks[doc];
+                    results[doc] +=  pageRanks[doc];
                 }
             }
 
