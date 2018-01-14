@@ -165,6 +165,16 @@ namespace WebCrawler
 
 
             Dictionary<string, double> Scores = new Dictionary<string, double>();
+            double docLenght = 0;
+            foreach(string term in querySplit)
+            {
+                foreach (string doc in index[term].documents.Keys)
+                {
+                    docLenght = Math.Pow(index[term].tfidf(doc), 2);
+                }
+                    
+            }
+            docLenght = Math.Sqrt(docLenght);
 
             foreach (string term in querySplit)
             {
@@ -173,18 +183,17 @@ namespace WebCrawler
                     continue;
                 }
                 TermVector termVector = index[term]; //get the termvector for the term from the index
-                var WeightofTermInQuery = termVector.docLeangt;
                 var PostingListForTerm = termVector.documents;
 
                 foreach (KeyValuePair<string, int> pairDocTermfreq in PostingListForTerm)
                 {
                     if (results.Keys.Contains(pairDocTermfreq.Key))
                     {
-                        results[pairDocTermfreq.Key] += (termVector.tfidf(pairDocTermfreq.Key) / WeightofTermInQuery);
+                        results[pairDocTermfreq.Key] += (termVector.tfidf(pairDocTermfreq.Key) / docLenght);
                     }
                     else
                     {
-                        results.Add(pairDocTermfreq.Key, (termVector.tfidf(pairDocTermfreq.Key) / WeightofTermInQuery));
+                        results.Add(pairDocTermfreq.Key, (termVector.tfidf(pairDocTermfreq.Key) / docLenght));
                     }
 
                 }
